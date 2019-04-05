@@ -1,17 +1,26 @@
-resource "vault_policy" "admin" {
-  name = "TERRAFORM-admin"
+# ENDPOINT GOVERNING POLICIES
 
-  policy = "${file("./policy-ADMIN.hcl")}"
+resource "vault_egp_policy" "businesshours" {
+  name = "TERRAFORM-egp-businesshours"
+  paths = ["*"]
+  enforcement_level = "hard-mandatory"
+
+  policy = "${file("./policy-egp-BUSINESSHOURS.sentinel")}"
 }
 
-resource "vault_policy" "provisioner" {
-  name = "TERRAFORM-provisioner"
+resource "vault_egp_policy" "cidr" {
+  name = "TERRAFORM-egp-cidr"
+  paths = ["*"]
+  enforcement_level = "soft-mandatory"
 
-  policy = "${file("./policy-PROVISIONER.hcl")}"
+  policy = "${file("./policy-egp-CIDR.sentinel")}"
 }
 
-resource "vault_policy" "dev-team" {
-  name = "TERRAFORM-dev-team"
+# ROLE GOVERNING POLICIES
 
-  policy = "${file("./policy-DEV-TEAM.hcl")}"
+resource "vault_rgp_policy" "userrestriction" {
+  name = "TERRAFORM-user-restriction"
+  enforcement_level = "hard-mandatory"
+
+  policy = "${file("./policy-rgp-USERRESTRICTION.sentinel")}"
 }
